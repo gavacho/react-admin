@@ -81,9 +81,9 @@ export default (
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json,
-        })),
+        httpClient(
+            `${apiUrl}/${resource}/${encodeURI(params.id)}`
+        ).then(({ json }) => ({ data: json })),
 
     getMany: (resource, params) => {
         const query = {
@@ -139,7 +139,7 @@ export default (
     },
 
     update: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        httpClient(`${apiUrl}/${resource}/${encodeURI(params.id)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json })),
@@ -148,7 +148,7 @@ export default (
     updateMany: (resource, params) =>
         Promise.all(
             params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+                httpClient(`${apiUrl}/${resource}/${encodeURI(id)}`, {
                     method: 'PUT',
                     body: JSON.stringify(params.data),
                 })
@@ -164,7 +164,7 @@ export default (
         })),
 
     delete: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        httpClient(`${apiUrl}/${resource}/${encodeURI(params.id)}`, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'text/plain',
@@ -175,7 +175,7 @@ export default (
     deleteMany: (resource, params) =>
         Promise.all(
             params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+                httpClient(`${apiUrl}/${resource}/${encodeURI(id)}`, {
                     method: 'DELETE',
                     headers: new Headers({
                         'Content-Type': 'text/plain',
